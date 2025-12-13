@@ -1,6 +1,5 @@
 import json
 import hashlib
-import time
 from typing import Dict, Any
 
 # ANSI Colors

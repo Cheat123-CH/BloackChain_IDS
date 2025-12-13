@@ -6,6 +6,10 @@ import hashlib
 import time
 from datetime import datetime, UTC
 
+RED = "\033[91m"
+YELLOW = "\033[93m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
 # Gateway configuration
 GATEWAY_HOST = "0.0.0.0"
 GATEWAY_PORT = 8000
@@ -21,8 +25,8 @@ GATEWAY_NODE_SECRET = b"Cyber_Gen10"
 
 # trust sensors
 SENSOR_SECRETS = {
-    "sensor-1": b"sensor1-secret",
-    "sensor-2": b"sensor2-secret",
+    "sensor-1": b"sensor1-key",
+    "sensor-2": b"sensor2-key",
 }
 
 def compute_hmac(secret: bytes, data_bytes: bytes) -> str:
@@ -44,13 +48,13 @@ def forward_to_node(block_payload: dict) -> dict:
                     resp += chunk
                 if resp:
                     responses.append(json.loads(resp.decode("utf-8")))
-                print(f"[Gateway] Forwarded alert to node {host}:{port}")
+                print(f"{GREEN}[Gateway] Forwarded alert to node {host}:{port}{RESET}")
         except ConnectionRefusedError:
             # Display message for node error (shut down / offline)
-            print(f"[Gateway] Failed for forwarding !.{host}:{port} (nodes offline)")
+            print(f"{YELLOW}[Gateway] Failed for forwarding !.{host}:{port} (nodes offline){RESET}")
         except Exception:
             # Display message for fail forwarding to node
-            print(f"[Gateway] Failed to forward to node {host}:{port}")
+            print(f"{RED}[Gateway] Failed to forward to node {host}:{port}{RESET}")
     if responses:
         return responses[0]
     return {"status": "error", "message": "no node responded"}
@@ -71,7 +75,7 @@ def handle_sensor_connection(conn, addr):
 
             alert = json.loads(data.strip().decode("utf-8"))
         except Exception as e:
-            print(f"[Gateway] Invalid data from {addr}: {e}")
+            print(f"{YELLOW}[Gateway] Invalid data from {addr}: {e}{RESET}")
             return
 
         sensor_id = alert.get("sensor_id", "unknown")
@@ -90,7 +94,7 @@ def handle_sensor_connection(conn, addr):
                 conn.sendall(json.dumps({"status": "error", "message": "connection error"}).encode("utf-8"))
                 return
         else:
-            print(f"[Gateway] REJECTED unknown sensor '{sensor_id}' from {addr}")
+            print(f"{RED}[Gateway] REJECTED unknown sensor '{sensor_id}' from {addr}{RESET}")
             conn.sendall(json.dumps({"status": "error", "message": "block"}).encode("utf-8"))
             return
 

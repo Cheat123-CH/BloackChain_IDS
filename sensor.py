@@ -7,13 +7,18 @@ import hmac
 import hashlib
 import random
 
+RED = "\033[91m"
+YELLOW = "\033[93m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
+
 GATEWAY_HOST = "127.0.0.1"
 GATEWAY_PORT = 8000
 
 # Should match gateway sensor secrets (for demo)
 SENSOR_SECRETS = {
-    "sensor-1": b"sensor1-secret",
-    "sensor-2": b"sensor2-secret",
+    "sensor-1": b"sensor1-key",
+    "sensor-2": b"sensor2-key",
 }
 ATTACK_TYPES = [
     "PORT_SCAN",
@@ -50,7 +55,7 @@ def make_alert(sensor_id: str):
 def main(sensor_id="sensor-1"):
     secret = SENSOR_SECRETS.get(sensor_id)
     if not secret:
-        print(f"[Sensor] Unknown sensor_id '{sensor_id}'.")
+        print(f"{YELLOW}[Sensor] Unknown sensor_id '{sensor_id}'.{RESET}")
         # continue without HMAC if secret unknown (gateway may warn)
     alert = make_alert(sensor_id)
     alert_copy = dict(alert)
@@ -68,7 +73,7 @@ def main(sensor_id="sensor-1"):
             if not chunk:
                 break
             resp += chunk
-        print("[Sensor] Gateway response:", resp.decode("utf-8"))
+        print(f"{RED}[Sensor]{RESET} Gateway response:", resp.decode("utf-8"))
 
 
 if __name__ == "__main__":

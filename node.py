@@ -1,16 +1,3 @@
-#!/usr/bin/env python3
-"""
-node.py
-run: python ./node.py --port
-
-Simple threaded TCP Node that:
-- verifies gateway_hmac for incoming JSON transactions
-- stores validated transactions
-- periodically creates blocks (simple blockchain) to detect tampering
-- persists chain to chain.json
-- supports chain verification
-"""
-
 import socketserver
 import json
 import hmac
@@ -19,14 +6,18 @@ import argparse
 import threading
 import os
 from datetime import datetime, UTC
+RED = "\033[91m"
+YELLOW = "\033[93m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
 
 # Node / Blockchain config
-GATEWAY_NODE_SECRET = b"Cyber_Gen10"  # must match gateway secret
+GATEWAY_NODE_SECRET = b"Cyber_Gen10" 
 CHAIN_FILE = "chain.json"
-BLOCK_TX_LIMIT = 4       # create a block every N transactions
-MINE_INTERVAL = 15       # seconds: also create block periodically if there are pending txs
+BLOCK_TX_LIMIT = 3     
+MINE_INTERVAL = 15      
 
-lock = threading.Lock()  # protect blockchain data structures
+lock = threading.Lock() 
 
 
 def sha256_hex(s: bytes) -> str:
@@ -38,7 +29,7 @@ class Block:
         self.index = index
         self.previous_hash = previous_hash
         self.timestamp = timestamp
-        self.transactions = transactions  # list of dicts (already validated)
+        self.transactions = transactions  
         self.nonce = nonce
         self.hash = self.compute_hash()
 
@@ -87,12 +78,9 @@ class SimpleBlockchain:
         return self.chain[-1]
 
     def add_transaction(self, tx_dict):
-        """
-        tx_dict should be the transaction WITHOUT the gateway_hmac key (we already validated it).
-        We'll store the transaction as-is (we recommend storing an original payload + metadata).
-        """
+
         self.pending_transactions.append(tx_dict)
-        self.save_chain()  # persist pending txs too (simple approach)
+        self.save_chain()  
 
     def create_block(self, nonce=0):
         if not self.pending_transactions:
@@ -106,7 +94,7 @@ class SimpleBlockchain:
         self.chain.append(block)
         self.pending_transactions = []
         self.save_chain()
-        print(f"[Blockchain] Store block index={block.index} hash={block.hash} txs={len(block.transactions)}")
+        print(f"[Blockchain] Store block index={block.index} txs={len(block.transactions)}")
         return block
 
     def save_chain(self):
@@ -132,13 +120,7 @@ class SimpleBlockchain:
             self.pending_transactions = []
 
     def verify_chain(self):
-        """
-        Verify:
-          1. Every block hash is correct for its content
-          2. Every block.previous_hash matches the previous block.hash
-          3. Every transaction contains a valid gateway_hmac (recompute HMAC)
-        Returns (valid: bool, messages: list[str])
-        """
+
         messages = []
         valid = True
 
@@ -207,7 +189,7 @@ class NodeHandler(socketserver.BaseRequestHandler):
             # The sender should include gateway_hmac
             gateway_hmac = payload.get("gateway_hmac")
             if gateway_hmac is None:
-                print("[Node] REJECTED: missing gateway_hmac")
+                print(f"{RED}[Node] REJECTED: missing gateway_hmac{RESET}")
                 self.request.sendall(json.dumps({"status": "rejected", "reason": "missing gateway_hmac"}).encode("utf-8"))
                 return
 
@@ -221,17 +203,16 @@ class NodeHandler(socketserver.BaseRequestHandler):
             ).hexdigest()
 
             if not hmac.compare_digest(gateway_hmac, expected_hmac):
-                print("[Node] REJECTED: invalid gateway_hmac")
+                print(f"{RED}[Node] REJECTED: invalid gateway_hmac{RED}")
                 self.request.sendall(json.dumps({"status": "rejected", "reason": "invalid gateway_hmac"}).encode("utf-8"))
                 return
 
             # Accept and store the original payload (including the gateway_hmac so we can re-verify later)
             with lock:
                 blockchain.add_transaction(payload)
-                # Optionally auto-create a block when pending tx reaches a threshold
                 if len(blockchain.pending_transactions) >= BLOCK_TX_LIMIT:
                     blockchain.create_block()
-            print("[Node] ALLOWED: transaction accepted")
+            print(f"{GREEN}[Node] ALLOWED: transaction accepted{RESET}")
             response = {
                 "status": "ok",
                 "chain_length": len(blockchain.chain),
@@ -245,7 +226,6 @@ class NodeHandler(socketserver.BaseRequestHandler):
                 self.request.sendall(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
             except Exception:
                 pass
-
 
 def run_server(host, port):
     print(f"[Node] Serving at {host}:{port}")
