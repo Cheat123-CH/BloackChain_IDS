@@ -1,6 +1,5 @@
 import json
 import hashlib
-from typing import Dict, Any
 
 # ANSI Colors
 RED = "\033[91m"
@@ -9,67 +8,44 @@ GREEN = "\033[92m"
 RESET = "\033[0m"
 
 
-def load_chain(path: str):
-    with open(path, "r") as f:
-        return json.load(f)
 
 def hash_block(block):
     block_copy = dict(block)
-    # remove stored hash before recomputing
-    if "hash" in block_copy:
-        del block_copy["hash"]
+    block_copy.pop("hash", None)
     return hashlib.sha256(
         json.dumps(block_copy, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
+
 
 def verify_chain_file(path):
     with open(path, "r") as f:
         chain = json.load(f)
 
-    # FIX: detect structure
-    if isinstance(chain, dict):
-        if "chain" in chain:
-            chain = chain["chain"]
-        else:
-            chain = [chain[key] for key in sorted(chain, key=lambda x: int(x))]
+    if isinstance(chain, dict) and "chain" in chain:
+        chain = chain["chain"]
 
     ok = True
-    for i in range(1, len(chain)):
-        prev = chain[i - 1]
-        curr = chain[i]
 
-        if curr["previous_hash"] != hash_block(prev):
-            print(f"{RED}[!] Block {i} invalid previous_hash{RESET}")
+    for i in range(1, len(chain)):
+        if chain[i]["previous_hash"] != hash_block(chain[i - 1]):
+            print(f"{RED}[!] Block {i} hash mismatch{RESET}")
             ok = False
 
-    print(YELLOW + "Chain verification: " + str(ok) + RESET)
-    return chain, ok 
+    # ================== RESULT ==================
+    if ok:
+        print(GREEN + "Log Integrity: VERIFIED" + RESET)
+        print(GREEN + "No tampering detected" + RESET)
+    else:
+        print(RED + "Log Integrity: FAILED" + RESET)
+        print(RED + "LOG TAMPERING DETECTED" + RESET)
 
-def pretty_print_chain(chain):
-    # If chain is a dict -> convert to list
-    if isinstance(chain, dict):
-        if "chain" in chain:
-            chain = chain["chain"]
-        else:
-            chain = [chain[k] for k in sorted(chain, key=lambda x: int(x))]
+    return chain, ok
 
-    for b in chain:
-        
-        # FIX: sometimes the block is wrapped in a list
-        if isinstance(b, list):
-            if len(b) > 0:
-                b = b[0]
-            else:
-                continue
 
-        if not isinstance(b, dict):
-            continue  # skip invalid items
+# def pretty_print_chain(chain):
+#     print(YELLOW + f"Date/time: {block.get('timestamp', 'N/A')}" + RESET)
 
-        index = b.get("index", "N/A")
-        ts = b.get("timestamp", "N/A")
-
-        print(YELLOW + f"Date/time:  {ts} ---" + RESET)
 
 if __name__ == "__main__":
-    chain = verify_chain_file("chain.json")
-    pretty_print_chain(chain)
+    chain = verify_chain_file("chain.json") 
+    # pretty_print_chain(chain)

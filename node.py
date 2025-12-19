@@ -102,8 +102,14 @@ class SimpleBlockchain:
             "chain": [b.to_dict() for b in self.chain],
             "pending_transactions": self.pending_transactions,
         }
+
+        # Write JSON (original behavior)
         with open(CHAIN_FILE, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, sort_keys=True)
+
+        # Write TEXT log
+        with open("nodelog.txt", "a", encoding="utf-8") as log:
+            json.dump(data, log, indent=2, sort_keys=True)
 
     def load_chain(self):
         if not os.path.exists(CHAIN_FILE):
