@@ -31,20 +31,20 @@
       - pip install pycrytodome
     
 
-  **Usage**
+## Usage
   Open separate terminals for each component and run the following commands in order:
 
-    - Start Blockchain Nodes
-        - python node.py --port 9000
-        - python node.py --port 9001
-    - Start Gateway
-        - python gateway.py
-    - Sensor Generate Log
-        - python sensor.py sensor-1
-        - python sensor.py sensor-2
-    - Decrypt nodelog.txt.enc
-        - python --decrypt-log
-        - AES key: suppersecrete
+  **Start Blockchain Nodes**
+    - python node.py --port 9000
+    - python node.py --port 9001
+  **Start Gateway**
+    - python gateway.py
+  **Sensor Generate Log**
+    - python sensor.py sensor-1
+    - python sensor.py sensor-2
+  **Decrypt nodelog.txt.enc**
+    - python --decrypt-log
+    - AES key: suppersecrete
 
   ## Sysetm Architecture
    - Sensors generate security logs
@@ -60,26 +60,24 @@
         
   ## Project Structure**
   .
-  ├── node.py            # Blockchain node implementation
-  ├── gateway.py         # Gateway for authenticating and forwarding logs
-  ├── sensor.py          # Sensor module generating security logs
-  ├── chain.json         # Blockchain data storage
-  ├── IDSlog.py          # Log verification 
-  ├── nodelog.txt.enc    # Encrypted node log file
-  └── README.md          
-  
+  ├── node.py
+  ├── gateway.py
+  ├── sensor.py
+  ├── chain.json
+  ├── IDSlog.py
+  ├── nodelog.txt.enc
+  └── README.md
+
   ## Output / Results
       - Audit tail on gateway
       - Encrypted logs stored securely
       - Tamper detection through hash verification
-
   ## Testing
       - Node online / offline secenarios
       - Trust sensensor (sensor-1/sensor-2) / untrust sensors 
       - Log tampering simulation
       - Hashing mismatch detection
       - Compare chain.json and nodelog.txt(decrypt nodelog.txt.enc with AES key: suppersecret)
-      
   ## Future Iprovements
       - Samrt Contract integration
       - web-based dashboard
