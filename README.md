@@ -46,19 +46,19 @@
         - python --decrypt-log
         - AES key: suppersecrete
 
-  **Sysetm Architecture**
-    - Sensors generate security logs
-    - Gateway authenticates log
-    - Logs are encrypted and sent to blockchain nodes
-    - Blockchain ensures inmmutability and integrity
-    - Encryption file for ensures confidentiality
+  ## Sysetm Architecture
+   - Sensors generate security logs
+   - Gateway authenticates log
+   - Logs are encrypted and sent to blockchain nodes
+   - Blockchain ensures inmmutability and integrity
+   - Encryption file for ensures confidentiality
 
-  **Cryptographic**
-    - HMAC for message authentication
-    - SHA-256 for hashing blocks
-    - AES for lgo encryption
+  ## Cryptographic
+   - HMAC for message authentication
+   - SHA-256 for hashing blocks
+   - AES for lgo encryption
         
-  **Project Structure**
+  ## Project Structure**
   .
   ├── node.py            # Blockchain node implementation
   ├── gateway.py         # Gateway for authenticating and forwarding logs
