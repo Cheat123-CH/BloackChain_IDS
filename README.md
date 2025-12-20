@@ -56,8 +56,8 @@
   ## Cryptographic
    - HMAC for message authentication
    - SHA-256 for hashing blocks
-   - AES for lgo encryption
-        
+   - AES for log encryption
+  
   ## Project Structure
  ``` .
       ├── node.py
@@ -68,7 +68,6 @@
       ├── nodelog.txt.enc
       └── README.md  
  ```
-
   ## Output / Results
       - Audit tail on gateway
       - Encrypted logs stored securely
@@ -79,7 +78,7 @@
       - Log tampering simulation
       - Hashing mismatch detection
       - Compare chain.json and nodelog.txt(decrypt nodelog.txt.enc with AES key: suppersecret)
-  ## Future Iprovements
+  ## Future Improvements
       - Samrt Contract integration
       - web-based dashboard
       - database storage log
