@@ -6,6 +6,12 @@ import argparse
 import threading
 import os
 from datetime import datetime, UTC
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad
+from Crypto.Util.Padding import unpad
+import getpass
+
 RED = "\033[91m"
 YELLOW = "\033[93m"
 GREEN = "\033[92m"
@@ -15,7 +21,10 @@ RESET = "\033[0m"
 GATEWAY_NODE_SECRET = b"Cyber_Gen10" 
 CHAIN_FILE = "chain.json"
 BLOCK_TX_LIMIT = 3     
-MINE_INTERVAL = 15      
+MINE_INTERVAL = 15   
+
+AES_PASSPHRASE = b"suppersecret"
+NODELOG_FILE = "nodelog.txt"
 
 lock = threading.Lock() 
 
@@ -61,7 +70,60 @@ class Block:
         # override computed hash to the stored hash (for loading)
         b.hash = d["hash"]
         return b
+# Encrypt file store log data for Confidentiality
 
+def derive_aes_key(passphrase: bytes) -> bytes:
+    # AES-256 key
+    return hashlib.sha256(passphrase).digest()
+
+
+def encrypt_nodelog():
+    if not os.path.exists(NODELOG_FILE):
+        return
+
+    key = derive_aes_key(AES_PASSPHRASE)
+    iv = get_random_bytes(16)
+
+    with open(NODELOG_FILE, "rb") as f:
+        plaintext = f.read()
+
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    ciphertext = cipher.encrypt(pad(plaintext, AES.block_size))
+
+    with open(NODELOG_FILE + ".enc", "wb") as f:
+        f.write(iv + ciphertext)
+
+def decrypt_nodelog():
+    enc_file = "nodelog.txt.enc"
+    out_file = "nodelog.txt"
+
+    if not os.path.exists(enc_file):
+        print("[Decrypt] Encrypted log file not found")
+        return
+
+    # 🔑 Prompt for key securely
+    passphrase = getpass.getpass("Enter AES key to decrypt nodelog: ").encode()
+
+    key = hashlib.sha256(passphrase).digest()
+
+    with open(enc_file, "rb") as f:
+        data = f.read()
+
+    iv = data[:16]
+    ciphertext = data[16:]
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+
+    try:
+        plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    except ValueError:
+        print("[Decrypt] Wrong key or corrupted file!")
+        return
+
+    # Restore original text log
+    with open(out_file, "wb") as f:
+        f.write(plaintext)
+
+    print("[Decrypt] file decrypt successfully")
 
 class SimpleBlockchain:
     def __init__(self):
@@ -70,7 +132,13 @@ class SimpleBlockchain:
         self.load_chain()
         if not self.chain:
             # create genesis block
-            genesis = Block(0, "0" * 64, datetime.utcnow().isoformat() + "Z", [], nonce=0)
+            genesis = Block(
+                        0,
+                        "0" * 64,
+                        datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+                        [],
+                        nonce=0
+                    )
             self.chain.append(genesis)
             self.save_chain()
 
@@ -108,8 +176,11 @@ class SimpleBlockchain:
             json.dump(data, f, indent=2, sort_keys=True)
 
         # Write TEXT log
-        with open("nodelog.txt", "a", encoding="utf-8") as log:
+        with open("nodelog.txt", "w", encoding="utf-8") as log:
             json.dump(data, log, indent=2, sort_keys=True)
+
+        encrypt_nodelog()
+        os.remove("nodelog.txt")
 
     def load_chain(self):
         if not os.path.exists(CHAIN_FILE):
@@ -259,6 +330,7 @@ def main():
     parser.add_argument("--port", type=int, default=9000)
     parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--verify", action="store_true", help="Verify chain and print results then exit")
+    parser.add_argument("--decrypt-log", action="store_true", help="Decrypt nodelog.txt.enc back to nodelog.txt")
     args = parser.parse_args()
 
     if args.verify:
@@ -266,6 +338,9 @@ def main():
         print("Verification result:", valid)
         for m in messages:
             print(" -", m)
+        return
+    if args.decrypt_log:
+        decrypt_nodelog()
         return
 
     run_server(args.host, args.port)
