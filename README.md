@@ -16,11 +16,11 @@
    - Simple and modular architecture
 
   ## Technologies USed
-  **Programming language:** Python
-  **Cryptography:**HMAC,AES,SHA-256
-  **Blockchain:** Custom lightweight blockchain
-  **Networking:** Socket programming
-  **Tools:**Git,VS Code
+  - Programming language: Python
+  - Cryptography:HMAC,AES,SHA-256
+  - Blockchain: Custom lightweight blockchain
+  - Networking: Socket programming
+  - Tools: Git,VS Code
 
   ## Installation
   - git clone https://github.com/Cheat123-CH/BloackChain_IDS
@@ -31,20 +31,20 @@
       - pip install pycrytodome
     
 
-## Usage
+  ## Usage
   Open separate terminals for each component and run the following commands in order:
 
-  -Start Blockchain Nodes
-    - python node.py --port 9000
-    - python node.py --port 9001
-  -Start Gateway
-    - python gateway.py
-  -Sensor Generate Log
-    - python sensor.py sensor-1
-    - python sensor.py sensor-2
-  -Decrypt nodelog.txt.enc
-    - python --decrypt-log
-    - AES key: suppersecrete
+  - Start Blockchain Nodes
+      - python node.py --port 9000
+      - python node.py --port 9001
+  - Start Gateway
+      - python gateway.py
+  - Sensor Generate Log
+      - python sensor.py sensor-1
+      - python sensor.py sensor-2
+  - Decrypt nodelog.txt.enc
+      - python --decrypt-log
+      - AES key: suppersecrete
 
   ## Sysetm Architecture
    - Sensors generate security logs
