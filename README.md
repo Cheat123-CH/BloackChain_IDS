@@ -25,10 +25,10 @@
   ## Installation
   git clone https://github.com/Cheat123-CH/BloackChain_IDS
   cd Blockchain_IDS
-    - Install all required packages
-        - pip install requests
-        - pip install cryptography
-        - pip install pycrytodome
+  - Install all required packages
+      - pip install requests
+      - pip install cryptography
+      - pip install pycrytodome
     
 
   **Usage**
@@ -47,26 +47,26 @@
         - AES key: suppersecrete
 
   **Sysetm Architecture**
-    1. Sensors generate security logs
-    2. Gateway authenticates log
-    3. Logs are encrypted and sent to blockchain nodes
-    4. Blockchain ensures inmmutability and integrity
-    5. Encryption file for ensures confidentiality
+    - Sensors generate security logs
+    - Gateway authenticates log
+    - Logs are encrypted and sent to blockchain nodes
+    - Blockchain ensures inmmutability and integrity
+    - Encryption file for ensures confidentiality
 
   **Cryptographic**
-        - HMAC for message authentication
-        - SHA-256 for hashing blocks
-        - AES for lgo encryption
+    - HMAC for message authentication
+    - SHA-256 for hashing blocks
+    - AES for lgo encryption
         
   **Project Structure**
-    .
-    ├── node.py
-    ├── gateway.py
-    ├── sensor.py
-    ├── chain.json
-    ├── IDSlog.py
-    ├── nodelog.txt.enc
-    └── README.md
+  .
+  ├── node.py            # Blockchain node implementation
+  ├── gateway.py         # Gateway for authenticating and forwarding logs
+  ├── sensor.py          # Sensor module generating security logs
+  ├── chain.json         # Blockchain data storage
+  ├── IDSlog.py          # Log verification 
+  ├── nodelog.txt.enc    # Encrypted node log file
+  └── README.md          
   
   ## Output / Results
       - Audit tail on gateway
