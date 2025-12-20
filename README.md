@@ -23,8 +23,8 @@
   **Tools:**Git,VS Code
 
   ## Installation
-  git clone https://github.com/Cheat123-CH/BloackChain_IDS
-  cd Blockchain_IDS
+  - git clone https://github.com/Cheat123-CH/BloackChain_IDS
+  - cd Blockchain_IDS
   - Install all required packages
       - pip install requests
       - pip install cryptography
@@ -34,15 +34,15 @@
 ## Usage
   Open separate terminals for each component and run the following commands in order:
 
-  **Start Blockchain Nodes**
+  -Start Blockchain Nodes
     - python node.py --port 9000
     - python node.py --port 9001
-  **Start Gateway**
+  -Start Gateway
     - python gateway.py
-  **Sensor Generate Log**
+  -Sensor Generate Log
     - python sensor.py sensor-1
     - python sensor.py sensor-2
-  **Decrypt nodelog.txt.enc**
+  -Decrypt nodelog.txt.enc
     - python --decrypt-log
     - AES key: suppersecrete
 
@@ -58,15 +58,16 @@
    - SHA-256 for hashing blocks
    - AES for lgo encryption
         
-  ## Project Structure**
-  .
-  ├── node.py
-  ├── gateway.py
-  ├── sensor.py
-  ├── chain.json
-  ├── IDSlog.py
-  ├── nodelog.txt.enc
-  └── README.md
+  ## Project Structure
+ ``` .
+      ├── node.py
+      ├── gateway.py
+      ├── sensor.py
+      ├── chain.json
+      ├── IDSlog.py
+      ├── nodelog.txt.enc
+      └── README.md  
+ ```
 
   ## Output / Results
       - Audit tail on gateway
