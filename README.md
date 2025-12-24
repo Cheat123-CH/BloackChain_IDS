@@ -70,22 +70,22 @@
       └── README.md  
  ```
   ## Output / Results
-      - Audit tail on gateway
-      - Encrypted logs stored securely
-      - Tamper detection through hash verification
+    - Audit tail on gateway
+    - Encrypted logs stored securely
+    - Tamper detection through hash verification
   ## Testing
-      - Node online / offline secenarios
-      - Trust sensensor (sensor-1/sensor-2) / untrust sensors 
-      - Log tampering simulation
-      - Hashing mismatch detection
-      - Compare chain.json and nodelog.txt(decrypt nodelog.txt.enc with AES key: suppersecret)
+    - Node online / offline secenarios
+    - Trust sensensor (sensor-1/sensor-2) / untrust sensors 
+    - Log tampering simulation
+    - Hashing mismatch detection
+    - Compare chain.json and nodelog.txt(decrypt nodelog.txt.enc with AES key: suppersecret)
   ## Future Improvements
-      - Samrt Contract integration
-      - web-based dashboard
-      - database storage log
-      - automate verification and detect tamper
-      - Machine Learning-based anomaly detection
-      - The system could be integrated with real IDS platforms such as Snort, Suricata, or Zeek
+    - Samrt Contract integration
+    - web-based dashboard
+    - database storage log
+    - automate verification and detect tamper
+    - Machine Learning-based anomaly detection
+    - The system could be integrated with real IDS platforms such as Snort, Suricata, or Zeek
 
   ## Author
     Met Sokhcheat:https://github.com/Cheat123-CH
