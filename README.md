@@ -12,7 +12,8 @@
    - Secure log storage using cryptographic hashing
    - Blockchain-based audit trail
    - Log integrity vrification activities
-   - Alert generation for suspicious activities
+   - Alert generation for suspicious activities 
+   - Redanduncy Nodes storage
    - Simple and modular architecture
 
   ## Technologies USed
@@ -43,8 +44,8 @@
       - python sensor.py sensor-1
       - python sensor.py sensor-2
   - Decrypt nodelog.txt.enc
-      - python --decrypt-log
-      - AES key: suppersecrete
+      - python node.py --decrypt-log
+      - AES key: suppersecret
 
   ## Sysetm Architecture
    - Sensors generate security logs
@@ -87,7 +88,7 @@
       - The system could be integrated with real IDS platforms such as Snort, Suricata, or Zeek
 
   ## Author
-    Met Sokcheat:https://github.com/Cheat123-CH
+    Met Sokhcheat:https://github.com/Cheat123-CH
  
 
 

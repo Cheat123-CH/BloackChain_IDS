@@ -257,6 +257,72 @@
           "type": "MALWARE_TRAFFIC"
         }
       ]
+    },
+    {
+      "hash": "9d4cbe09d64247dc99e78b46061132943120970909484b662c6a11ad9de335fc",
+      "index": 10,
+      "nonce": 0,
+      "previous_hash": "9015a598046b3ba7077d87bb411f14f9f1a5b8b526e0dcf33ec0d6eab7bdda6f",
+      "timestamp": "2025-12-24T14:14:28.880458Z",
+      "transactions": [
+        {
+          "alert_id": "sensor-1-1766585658-3776",
+          "dst_ip": "192.168.158.146",
+          "dst_port": 22,
+          "gateway_hmac": "cd64dc1868099d57886cb02df58117f6c7777f83cf96145dd2296a37994fad5a",
+          "gateway_ts": 1766585658.1526551,
+          "sensor_hmac": "4cffff2b04b4943295e6b9df862eead8f70c9f4a695969187283d254e4cb49bc",
+          "sensor_id": "sensor-1",
+          "severity": "medium",
+          "src_ip": "192.168.1.45",
+          "timestamp": 1766585658.1262896,
+          "type": "SQL_INJECTION"
+        }
+      ]
+    },
+    {
+      "hash": "60ee4ba7f262a38cfa1c92bb67df22e687f6c4d03117113b24cc44a404946eb2",
+      "index": 11,
+      "nonce": 0,
+      "previous_hash": "9d4cbe09d64247dc99e78b46061132943120970909484b662c6a11ad9de335fc",
+      "timestamp": "2025-12-24T14:14:58.939585Z",
+      "transactions": [
+        {
+          "alert_id": "sensor-2-1766585685-9295",
+          "dst_ip": "192.168.142.233",
+          "dst_port": 22,
+          "gateway_hmac": "33fb8754ccf1c7b1f79ece969f47ee2c307deda506d25073ce11123b982f6121",
+          "gateway_ts": 1766585685.0928602,
+          "sensor_hmac": "9583753be142674ed931c269c0fa48eb93fe26493b4f62d04007f79923ff67fd",
+          "sensor_id": "sensor-2",
+          "severity": "medium",
+          "src_ip": "192.168.1.45",
+          "timestamp": 1766585685.0770187,
+          "type": "PORT_SCAN"
+        }
+      ]
+    },
+    {
+      "hash": "d2d9e833c9eb157389d4fc053c1e7ad6ed4cfcd751d54849f0ea01b5913db8b2",
+      "index": 12,
+      "nonce": 0,
+      "previous_hash": "60ee4ba7f262a38cfa1c92bb67df22e687f6c4d03117113b24cc44a404946eb2",
+      "timestamp": "2025-12-24T14:16:13.976425Z",
+      "transactions": [
+        {
+          "alert_id": "sensor-1-1766585760-1517",
+          "dst_ip": "192.168.26.18",
+          "dst_port": 22,
+          "gateway_hmac": "dadc3ea060d0c5e94b3c35b0c1656df8b3ea4d9e90eebf1b811a953ff7bce341",
+          "gateway_ts": 1766585760.4405408,
+          "sensor_hmac": "8776d66551b417b81a127229a7893097cf35bb27597ce91b5ef5e4d0ab426051",
+          "sensor_id": "sensor-1",
+          "severity": "medium",
+          "src_ip": "192.168.1.45",
+          "timestamp": 1766585760.4345264,
+          "type": "BRUTE_FORCE"
+        }
+      ]
     }
   ],
   "pending_transactions": []
